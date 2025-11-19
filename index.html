@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="theme-color" content="#ff9fc4" />
+<title>For My Love — Ritik 💗</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#fff1f6;
+    --bg2:#fff7fb;
+    --accent:#ff4f94;
+    --accent-2:#ff9ac2;
+    --muted:#6b4a53;
+    --glass: rgba(255,255,255,0.75);
+    --card:#ffffff;
+    --maxw:1100px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Arial;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#33242d;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:var(--maxw);margin:26px auto;padding:18px}
+  header{position:sticky;top:12px;z-index:60;background:linear-gradient(180deg,rgba(255,255,255,0.75),rgba(255,255,255,0.55));backdrop-filter:blur(6px);border-radius:14px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 8px 30px rgba(255,80,150,0.06)}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
+  nav{display:flex;gap:10px;align-items:center}
+  nav a{padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:600;color:#7a3a4a}
+  nav a:hover{background:rgba(255,122,162,0.08)}
+  .controls{display:flex;gap:8px;align-items:center}
+
+  /* HERO */
+  .hero{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:center;padding:34px 0}
+  @media(max-width:980px){.hero{grid-template-columns:1fr;padding:18px 0}}
+  .hero-card{background:var(--glass);border-radius:18px;padding:26px;box-shadow:0 18px 60px rgba(200,60,120,0.06);position:relative;overflow:hidden;border:2px solid rgba(255,120,170,0.06)}
+  .headline{font-size:28px;color:var(--accent);margin:0 0 8px}
+  .sub{color:var(--muted);font-size:15px;margin-bottom:14px}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(255,80,150,0.12)}
+  .btn.alt{background:transparent;border:1px solid rgba(255,80,150,0.12);color:var(--accent)}
+  .hero-side{display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center}
+
+  /* SECTIONS */
+  section{padding:44px 0;border-radius:12px}
+  .card{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 12px 40px rgba(0,0,0,0.06)}
+  h2{color:var(--accent);margin:0 0 8px}
+  p.lead{color:var(--muted);line-height:1.7;margin:0}
+
+  /* FLIP CARDS */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .flip{perspective:1000px}
+  .flip-inner{position:relative;width:100%;height:140px;transform-style:preserve-3d;transition:transform .7s}
+  .flip-front,.flip-back{position:absolute;inset:0;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:12px;font-weight:700}
+  .flip-front{background:linear-gradient(180deg,#fff,#fff0f6);color:#6b3a46;box-shadow:0 8px 20px rgba(0,0,0,0.05)}
+  .flip-back{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;transform:rotateY(180deg)}
+  .flip.flipped .flip-inner{transform:rotateY(180deg)}
+
+  /* REVEAL HEARTS */
+  .reveal{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .r-heart{width:86px;height:86px;border-radius:999px;background:linear-gradient(135deg,#ff9fc4,#ffd6e8);display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff;cursor:pointer;box-shadow:0 10px 30px rgba(255,120,160,0.12)}
+  .r-msg{display:none;margin-top:6px;color:var(--muted);text-align:center;font-weight:600}
+
+  /* MINI-GAME */
+  .game{display:flex;flex-direction:column;align-items:center;gap:12px}
+  #gameCanvas{width:100%;height:320px;border-radius:12px;background:linear-gradient(180deg,#fff0f6,#fff7fb);box-shadow:0 10px 30px rgba(200,60,120,0.06)}
+  .game-info{display:flex;gap:12px;align-items:center}
+
+  /* SURPRISE POPUP */
+  .popup{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:120;background:#fff;border-radius:14px;padding:22px;max-width:480px;width:90%;box-shadow:0 30px 80px rgba(150,30,80,0.18);text-align:center}
+  .popup.show{display:block}
+  .popup h3{color:var(--accent);margin:0 0 8px}
+
+  /* EFFECTS */
+  #effects-root{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
+  .effect-heart{position:absolute;font-size:24px;pointer-events:none;will-change:transform,opacity}
+  .sparkle{position:absolute;font-size:14px;pointer-events:none;will-change:transform,opacity}
+
+  /* ILY floating */
+  .ily{position:fixed;font-weight:800;color:var(--accent);font-size:18px;pointer-events:none;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0;animation:ilyPop .9s forwards}
+  @keyframes ilyPop{0%{opacity:0;transform:translate(-50%,-40%)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,-120%)}}
+
+  /* HEART TRAIL (touch) */
+  .trail-heart{position:absolute;font-size:20px;pointer-events:none;transform:translate(-50%,-50%);opacity:1;transition:transform .9s ease,opacity .9s}
+
+  /* FOOTER */
+  footer{margin-top:36px;padding:36px 12px;text-align:center;color:var(--muted);font-weight:600}
+
+  /* small tweaks */
+  .big-touch{padding:12px 16px;border-radius:12px}
+  .muted{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- Effects container -->
+<div id="effects-root" aria-hidden="true"></div>
+
+<div class="wrap">
+  <header role="banner" aria-label="Top nav">
+    <div class="brand">
+      <div class="logo" aria-hidden>💗</div>
+      <div>
+        <div style="font-weight:800">For My Love</div>
+        <div style="font-size:12px;color:var(--muted)">A little universe — from Ritik</div>
+      </div>
+    </div>
+
+    <nav role="navigation" aria-label="Main">
+      <a href="#story">Story</a>
+      <a href="#reasons">Why</a>
+      <a href="#promises">Promises</a>
+      <a href="#game">Play</a>
+    </nav>
+
+    <div class="controls">
+      <button id="musicToggle" class="btn alt" aria-pressed="false">🔈 Music</button>
+      <button id="surpriseHeader" class="btn big-touch">✨ Surprise</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="hero-card card" role="region" aria-label="Hero">
+      <h1 id="hero-title" class="headline">To my beautiful love — you are my everything 💗</h1>
+      <p class="sub">This page is a long gentle letter, tiny games, secret surprises and soft animations made for you. Tap, play, and find the little notes I hid. 🌸✨</p>
+
+      <div style="margin-top:14px" class="cta-row">
+        <button id="openSurprise" class="btn big-touch">Open My Heart 💝</button>
+        <button id="scrollStory" class="btn alt big-touch">Our Story</button>
+      </div>
+
+      <div style="margin-top:12px;color:var(--muted);font-size:13px">Tip: Tap hearts, flip cards, and try the mini-game — everything's made with love. 💞</div>
+    </div>
+
+    <aside class="hero-side" aria-hidden>
+      <div class="card" style="width:100%;text-align:center">
+        <strong style="color:var(--accent)">Thought for today</strong>
+        <p class="lead">Being with you makes ordinary moments soft and magical. 🌷</p>
+        <div style="height:8px"></div>
+        <button id="surpriseBtn" class="btn">Surprise 💝</button>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Story -->
+  <section id="story" aria-labelledby="story-title">
+    <h2 id="story-title">Our Story</h2>
+    <div class="card">
+      <p class="lead">It began with a simple hello and grew into a thousand small moments — shared laughs, quiet late nights, and a comfort that felt like home. I keep those moments like little lights I visit when I miss you. 💗✨</p>
+    </div>
+  </section>
+
+  <!-- Reasons / Flip cards -->
+  <section id="reasons" aria-labelledby="reasons-title">
+    <h2 id="reasons-title">Why I Love You</h2>
+    <div class="grid">
+      <div class="flip" tabindex="0" role="button" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-front">You make me laugh 😂</div>
+          <div class="flip-back">Your laughter is the melody I wake up to 🎶💗</div>
+        </div>
+      </div>
+
+      <div class="flip" tabindex="0" role="button" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-front">You are kind 🌷</div>
+          <div class="flip-back">Your kindness softens every worry ✨</div>
+        </div>
+      </div>
+
+      <div class="flip" tabindex="0" role="button" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-front">You support me 💪</div>
+          <div class="flip-back">You are my steady anchor and my biggest cheerleader 💞</div>
+        </div>
+      </div>
+
+      <div class="flip" tabindex="0" role="button" aria-pressed="false">
+        <div class="flip-inner">
+          <div class="flip-front">Your smile ☀️</div>
+          <div class="flip-back">Your smile turns any day into a favorite memory 💖</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reveal hearts -->
+  <section id="reveal" aria-labelledby="reveal-title">
+    <h2 id="reveal-title">Tap Hearts for Little Notes</h2>
+    <div class="card reveal">
+      <div style="text-align:center;">
+        <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap">
+          <div>
+            <div class="r-heart" data-msg="You are my favorite hello">💗</div>
+            <div class="r-msg">You are my favorite hello ❤️</div>
+          </div>
+          <div>
+            <div class="r-heart" data-msg="I keep your smile in my pocket">🌸</div>
+            <div class="r-msg">I keep your smile in my pocket ✨</div>
+          </div>
+          <div>
+            <div class="r-heart" data-msg="Forever sounds perfect with you">💕</div>
+            <div class="r-msg">Forever sounds perfect with you 💞</div>
+          </div>
+          <div>
+            <div class="r-heart" data-msg="My hand fits yours like home">💞</div>
+            <div class="r-msg">My hand fits yours like home 🏡</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mini-game -->
+  <section id="game" aria-labelledby="game-title">
+    <h2 id="game-title">Mini Game — Catch the Hearts 💗🎮</h2>
+    <div class="card game">
+      <canvas id="gameCanvas" aria-label="Catch the hearts"></canvas>
+      <div class="game-info">
+        <div style="font-weight:800;color:var(--accent)">Score: <span id="score">0</span></div>
+        <button id="startGame" class="btn alt">Start</button>
+        <button id="resetGame" class="btn alt">Reset</button>
+      </div>
+      <p style="margin-top:8px;color:var(--muted)">Tap or click hearts before they float away — get the highest score! ✨</p>
+    </div>
+  </section>
+
+  <!-- Final secret -->
+  <section aria-labelledby="final-title">
+    <h2 id="final-title">A Little Secret</h2>
+    <div class="card" style="text-align:center">
+      <p class="lead">Close your eyes — picture us in ten years: still laughing, still holding hands, still making tiny new traditions. I want all of that with you. 💗</p>
+      <div style="margin-top:14px"><button id="finalSurprise" class="btn">Open My Letter ✉️</button></div>
+    </div>
+  </section>
+
+  <footer>
+    Made with love — <strong>Ritik 💗</strong>
+  </footer>
+</div>
+
+<!-- Popup love letter -->
+<div id="popup" class="popup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+  <h3 id="popup-title">My Love Letter</h3>
+  <p id="popup-text">My jaan — you are my sunshine, my calm, my everything. I love you beyond words. 💗</p>
+  <div style="margin-top:12px">
+    <button id="close" class="btn alt">Close</button>
+    <button id="confettiBtn" class="btn">Celebrate 🎉</button>
+  </div>
+</div>
+
+<script>
+/* Small helpers */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+/* Effects root */
+const effectsRoot = document.getElementById('effects-root');
+
+/* Falling hearts (gentle) */
+function spawnFallingHeart(){
+  const el = document.createElement('div');
+  el.className = 'effect-heart';
+  el.textContent = ['💗','💞','💕','🌸','✨'][Math.floor(Math.random()*5)];
+  el.style.left = (Math.random()*100) + 'vw';
+  el.style.top = '-8vh';
+  el.style.fontSize = (16 + Math.random()*28) + 'px';
+  el.style.transition = 'transform linear ' + (3 + Math.random()*4) + 's, opacity 1s';
+  effectsRoot.appendChild(el);
+  requestAnimationFrame(()=> {
+    el.style.transform = 'translateY(120vh) rotate(' + (Math.random()*720-360) + 'deg)';
+    el.style.opacity = '0';
+  });
+  setTimeout(()=> el.remove(), 8000);
+}
+setInterval(spawnFallingHeart, 380);
+
+/* Pointer sparkles */
+function sparkle(x,y){
+  const s = document.createElement('div');
+  s.className = 'sparkle';
+  s.textContent = '✨';
+  s.style.left = x + 'px';
+  s.style.top = y + 'px';
+  s.style.opacity = '1';
+  s.style.transform = 'translate(-50%,-50%) scale(1)';
+  effectsRoot.appendChild(s);
+  requestAnimationFrame(()=> {
+    s.style.transform = 'translate(-50%,-140%) scale(.6)';
+    s.style.opacity = '0';
+  });
+  setTimeout(()=> s.remove(), 900);
+}
+document.addEventListener('pointerdown', e => { sparkle(e.clientX, e.clientY); });
+
+/* Reveal hearts messages */
+$$('.r-heart').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    const msg = el.parentElement.querySelector('.r-msg');
+    if(!msg) return;
+    msg.style.display = msg.style.display === 'block' ? 'none' : 'block';
+    const rect = el.getBoundingClientRect();
+    sparkle(rect.left + rect.width/2, rect.top + rect.height/2);
+  });
+});
+
+/* Flip card interactions (click/keyboard) */
+$$('.flip').forEach(f=>{
+  f.addEventListener('click', ()=> f.classList.toggle('flipped'));
+  f.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); f.classList.toggle('flipped'); }
+  });
+});
+
+/* Popup / Surprise logic */
+const popup = $('#popup');
+$('#surpriseBtn').addEventListener('click', ()=>{
+  showPopup("A Little Melody","This melody and letter are for you. I love you — Ritik 💗");
+  floatILY(8);
+});
+$('#openSurprise').addEventListener('click', ()=>{
+  showPopup("Open Heart","This surprise is a small piece of my heart. You're my forever.");
+  floatILY(10);
+});
+$('#finalSurprise')?.addEventListener('click', ()=> showPopup("My Letter","Every moment with you is a treasure. I love you — Ritik 💗"));
+$('#scrollStory').addEventListener('click', ()=> document.getElementById('story').scrollIntoView({behavior:'smooth'}));
+$('#surpriseHeader')?.addEventListener('click', ()=> { burstConfetti(50); floatILY(10); });
+
+function showPopup(title, text){
+  $('#popup-title').textContent = title || 'My Love Letter';
+  $('#popup-text').textContent = text || 'My jaan — you are my everything';
+  popup.classList.add('show');
+  softChime();
+}
+
+/* Close popup */
+$('#close').addEventListener('click', ()=> popup.classList.remove('show'));
+
+/* Confetti burst */
+function burstConfetti(n=40){
+  for(let i=0;i<n;i++){
+    const el = document.createElement('div');
+    el.textContent = ['💗','🌸','✨','💞'][Math.floor(Math.random()*4)];
+    el.style.position = 'absolute';
+    el.style.left = (50 + (Math.random()*160-80)) + 'vw';
+    el.style.top = (50 + (Math.random()*40-20)) + 'vh';
+    el.style.fontSize = (12 + Math.random()*28) + 'px';
+    el.style.transform = `translate(${(Math.random()*-200)+100}px, ${(Math.random()*-400)+50}px) rotate(${Math.random()*360}deg)`;
+    el.style.transition = 'transform 1200ms cubic-bezier(.2,.9,.3,1),opacity 1200ms';
+    effectsRoot.appendChild(el);
+    setTimeout(()=> el.style.opacity = '0', 50);
+    setTimeout(()=> el.remove(), 1400);
+  }
+}
+$('#confettiBtn')?.addEventListener('click', ()=> burstConfetti(80));
+
+/* Music control (user-triggered) */
+const musicUrl = "https://cdn.pixabay.com/download/audio/2023/03/04/audio_24d511e1f8.mp3?filename=romantic-piano-140531.mp3";
+let music = new Audio(musicUrl);
+music.loop = true;
+let musicOn = false;
+$('#musicToggle').addEventListener('click', function(){
+  if(!musicOn){
+    music.play().catch(()=>{}); this.textContent = '🔈 On'; musicOn = true;
+  } else { music.pause(); this.textContent = '🔇 Off'; musicOn = false; }
+});
+function softChime(){ const s = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_818572c346.mp3"); s.volume=0.5; s.play().catch(()=>{}); }
+
+/* Mini-game: Catch the hearts (improved) */
+const canvas = $('#gameCanvas');
+const ctx = canvas.getContext('2d');
+let cw, ch;
+function resizeCanvas(){ cw = canvas.width = Math.min(window.innerWidth * 0.95, 900); ch = canvas.height = 320; }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+
+let gameHearts = [], gameScore = 0, gameRunning=false, spawnTimer=null, gameTick=null;
+
+function startGame(){
+  gameScore = 0; gameHearts = []; $('#score').textContent = gameScore;
+  if(gameRunning) return;
+  gameRunning = true;
+  spawnTimer = setInterval(()=> {
+    gameHearts.push({
+      x: Math.random()*(cw-60)+30,
+      y: ch + 30,
+      vy: -(1 + Math.random()*3),
+      rot: Math.random()*6.28,
+      vr: (Math.random()*0.08)-0.04,
+      size: 26 + Math.random()*26
+    });
+  }, 700);
+  gameTick = requestAnimationFrame(gameLoop);
+}
+
+function resetGame(){
+  gameRunning = false; clearInterval(spawnTimer); spawnTimer=null; gameHearts=[]; gameScore=0; $('#score').textContent=gameScore; cancelAnimationFrame(gameTick); ctx.clearRect(0,0,cw,ch);
+}
+
+$('#startGame').addEventListener('click', ()=> startGame());
+$('#resetGame').addEventListener('click', ()=> resetGame());
+
+canvas.addEventListener('click', (e)=>{
+  if(!gameRunning) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left, y = e.clientY - rect.top;
+  for(let i=gameHearts.length-1;i>=0;i--){
+    const h = gameHearts[i];
+    const dx = x - h.x, dy = y - h.y;
+    if(Math.sqrt(dx*dx + dy*dy) < 36){
+      gameHearts.splice(i,1); gameScore++; $('#score').textContent = gameScore;
+      spawnSparkleAt(h.x + rect.left, h.y + rect.top);
+      break;
+    }
+  }
+});
+
+function gameLoop(){
+  ctx.clearRect(0,0,cw,ch);
+  for(let i=gameHearts.length-1;i>=0;i--){
+    const h = gameHearts[i];
+    h.y += h.vy; h.rot += h.vr;
+    ctx.save(); ctx.translate(h.x,h.y); ctx.rotate(h.rot); ctx.font = `${h.size}px serif`; ctx.fillText("💗",-h.size/2,h.size/2); ctx.restore();
+    if(h.y < -40) gameHearts.splice(i,1);
+  }
+  gameTick = requestAnimationFrame(gameLoop);
+}
+
+/* spawn sparkle absolute */
+function spawnSparkleAt(x,y){
+  const el = document.createElement('div'); el.textContent='✨'; el.style.position='absolute'; el.style.left=x+'px'; el.style.top=y+'px'; el.style.fontSize='18px'; el.style.transform='translate(-50%,-50%)'; el.style.transition='transform 700ms,opacity 700ms'; effectsRoot.appendChild(el);
+  requestAnimationFrame(()=>{ el.style.transform='translate(-50%,-80%) scale(.5)'; el.style.opacity='0'; }); setTimeout(()=>el.remove(),900);
+}
+
+/* touch heart trail */
+document.addEventListener('touchmove', ev => {
+  for(const t of ev.touches){
+    const el = document.createElement('div'); el.textContent='💗'; el.style.position='absolute'; el.style.left = t.clientX + 'px'; el.style.top = t.clientY + 'px'; el.style.transform='translate(-50%,-50%)'; el.style.fontSize='20px'; effectsRoot.appendChild(el);
+    setTimeout(()=> el.remove(), 900);
+  }
+},{passive:true});
+
+/* float ILY */
+function floatILY(count=8){
+  for(let i=0;i<count;i++){
+    setTimeout(()=> {
+      const el = document.createElement('div'); el.className='ily'; el.textContent='I love you 💗'; el.style.left = (15 + Math.random()*70) + 'vw'; el.style.top = (45 + Math.random()*30) + 'vh'; document.body.appendChild(el);
+      setTimeout(()=> el.remove(), 1500);
+    }, i*110);
+  }
+}
+
+/* final wiring */
+setTimeout(()=> { document.documentElement.style.scrollBehavior='smooth'; }, 200);
+
+/* accessible focus hints */
+document.addEventListener('keydown', e => { if(e.key==='Tab') document.body.classList.add('show-focus'); });
+
+</script>
+</body>
+</html> 
